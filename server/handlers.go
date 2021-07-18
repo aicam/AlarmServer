@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/aicam/AlarmServer/DB"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -22,6 +23,7 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			})
 			return
 		}
+		log.Print(jsData)
 		s.DB.Save(jsData)
 		context.JSON(http.StatusOK, Response{
 			StatusCode: 1,
