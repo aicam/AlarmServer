@@ -48,13 +48,13 @@ func sendNotificationByPushOver(message string, title string) {
 		return
 	}
 	fmt.Println(string(jsonBytes))
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
+	//req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	//client := &http.Client{}
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		panic(err)
 	}

@@ -3,7 +3,9 @@ package server
 import (
 	"github.com/aicam/AlarmServer/DB"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -33,8 +35,9 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			return
 		}
 		if timeFounded.Sub(time.Now()).Hours()/24 < 10 {
-			go sendNotificationByPushOver("Time found in "+timeFounded.Month().String()+" "+string(timeFounded.Day()), "Time found less than "+
-				string(int(timeFounded.Sub(time.Now()).Hours()/24))+" days"+" in "+jsData.Country)
+			log.Print(strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours() / 24)))
+			go sendNotificationByPushOver("In "+timeFounded.Month().String()+" "+strconv.Itoa(timeFounded.Day()), "Time found in "+
+				strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours()/24))+" days"+" in "+jsData.Country)
 		}
 		s.DB.Save(jsData)
 		context.JSON(http.StatusOK, Response{
