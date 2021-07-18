@@ -1,12 +1,22 @@
-package AlarmServer
+package main
 
 import (
 	"github.com/aicam/AlarmServer/DB"
+	"github.com/aicam/AlarmServer/server"
+	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
 	// migration
-	s := NewServer()
+	s := server.NewServer()
 	s.DB = DB.DbSqlMigration("aicam:021021ali@tcp(127.0.0.1:3306)/messenger_api?charset=utf8mb4&parseTime=True")
+	s.Routes()
+	log.Print(time.Now())
+	err := http.ListenAndServe("0.0.0.0:4300", s.Router)
+	if err != nil {
+		log.Print(err)
+	}
 
 }
