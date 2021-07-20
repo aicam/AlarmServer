@@ -38,8 +38,8 @@ func sendNotificationByPushOver(message string, title string) {
 
 	var jsonBytes []byte
 	jsonBytes, err := json.Marshal(&NotifReq{
-		Token:   "atvfudwzqaiapnynb436d3bsji625s",
-		User:    "uj19y8eotoue2gemw4aerdpkir9imq",
+		Token:   "Katvfudwzqaiapnynb436d3bsji625s",
+		User:    "Kuj19y8eotoue2gemw4aerdpkir9imq",
 		Message: message,
 		Title:   title,
 	})
