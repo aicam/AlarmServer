@@ -34,7 +34,7 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			})
 			return
 		}
-		if timeFounded.Sub(time.Now()).Hours()/24 < 10 {
+		if jsData.Priority > 0 {
 			log.Print(strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours() / 24)))
 			go sendNotificationByPushOver("In "+timeFounded.Month().String()+" "+strconv.Itoa(timeFounded.Day()), "Time found in "+
 				strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours()/24))+" days"+" in "+jsData.Country)
