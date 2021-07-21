@@ -4,6 +4,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
+	"time"
 )
 
 type WebData struct {
@@ -15,11 +16,18 @@ type WebData struct {
 	ClosestDate  string `json:"closest_date"`
 }
 
+type UsersData struct {
+	gorm.Model
+	Username   string    `json:"username"`
+	LastOnline time.Time `json:"last_online"`
+}
+
 func DbSqlMigration(url string) *gorm.DB {
 	db, err := gorm.Open("mysql", url)
 	if err != nil {
 		log.Println(err)
 	}
 	db.AutoMigrate(&WebData{})
+	db.AutoMigrate(&UsersData{})
 	return db
 }
