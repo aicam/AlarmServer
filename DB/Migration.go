@@ -8,12 +8,15 @@ import (
 )
 
 type WebData struct {
-	Status       string `json:"status"`
-	TimeReceived string `json:"time_received"`
-	Priority     int    `json:"priority"`
-	PayLoad      string `json:"pay_load"`
-	Country      string `json:"country"`
-	ClosestDate  string `json:"closest_date"`
+	gorm.Model
+	Status      string    `json:"status"`
+	Error       string    `json:"error"`
+	DubaiTxt    string    `json:"dubai_txt"`
+	DubaiTime   time.Time `json:"dubai_time"`
+	ArmeniaTxt  string    `json:"armenia_txt"`
+	ArmeniaTime time.Time `json:"armenia_time"`
+	TurkeyTxt   string    `json:"turkey_txt"`
+	TurkeyTime  time.Time `json:"turkey_time"`
 }
 
 type UsersData struct {

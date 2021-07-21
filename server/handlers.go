@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"github.com/aicam/AlarmServer/DB"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -70,24 +69,24 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			})
 			return
 		}
-		layout := "2006-01-02T15:04:05Z07:00"
-		if jsData.Priority >= 0 {
-			timeFounded, err := time.Parse(layout, jsData.ClosestDate)
-			if err != nil {
-				context.JSON(http.StatusOK, Response{
-					StatusCode: -1,
-					Body:       err.Error(),
-				})
-				return
-			}
-			if jsData.Priority > 0 {
-				log.Print(strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours() / 24)))
-				go sendNotificationByPushOver("In "+timeFounded.Month().String()+" "+strconv.Itoa(timeFounded.Day()), "Time found in "+
-					strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours()/24))+" days"+" in "+jsData.Country)
-			}
-		}
+		_ = "2006-01-02T15:04:05Z07:00"
+		//if jsData.Priority >= 0 {
+		//	timeFounded, err := time.Parse(layout, jsData.ClosestDate)
+		//	if err != nil {
+		//		context.JSON(http.StatusOK, Response{
+		//			StatusCode: -1,
+		//			Body:       err.Error(),
+		//		})
+		//		return
+		//	}
+		//	if jsData.Priority > 0 {
+		//		log.Print(strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours() / 24)))
+		//		go sendNotificationByPushOver("In "+timeFounded.Month().String()+" "+strconv.Itoa(timeFounded.Day()), "Time found in "+
+		//			strconv.Itoa(int(timeFounded.Sub(time.Now()).Hours()/24))+" days"+" in "+jsData.Country)
+		//	}
+		//}
 
-		s.DB.Save(jsData)
+		s.DB.Save(&jsData)
 		context.JSON(http.StatusOK, Response{
 			StatusCode: 1,
 			Body:       "Data saved successfully!",
@@ -98,7 +97,15 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 func (s *Server) GetInfo() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var DBData []DB.WebData
+		offset, err := strconv.Atoi(context.Param("offset"))
+		if err != nil {
+			context.JSON(http.StatusOK, Response{
+				StatusCode: -1,
+				Body:       err.Error(),
+			})
+			return
+		}
 		s.DB.Find(&DBData)
-		context.JSON(http.StatusOK, DBData)
+		context.JSON(http.StatusOK, DBData[len(DBData)-offset:])
 	}
 }
