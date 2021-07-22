@@ -18,7 +18,7 @@ type Response struct {
 func (s *Server) AddUser() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		newUser := context.Param("username")
-		s.DB.Save(DB.UsersData{
+		s.DB.Save(&DB.UsersData{
 			Username:   newUser,
 			LastOnline: time.Now(),
 		})
@@ -69,7 +69,16 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			})
 			return
 		}
+
 		_ = "2006-01-02T15:04:05Z07:00"
+		if jsData.ArmeniaTime.Year() != 1 {
+			sendNotificationByPushOver(jsData.ArmeniaTxt, "Armenia Time found")
+			sendNotificationByIFTTT(jsData.ArmeniaTxt, "Armenia Time found")
+		}
+		if jsData.DubaiTime.Month() >= 8 {
+			sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
+			sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
+		}
 		//if jsData.Priority >= 0 {
 		//	timeFounded, err := time.Parse(layout, jsData.ClosestDate)
 		//	if err != nil {

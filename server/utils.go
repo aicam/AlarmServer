@@ -28,18 +28,54 @@ func convertMonthToInt(month string) int {
 	return m[month]
 }
 
-type NotifReq struct {
+type NotifReqPushOver struct {
 	Token   string `json:"token"`
 	User    string `json:"user"`
 	Message string `json:"message"`
 	Title   string `json:"title"`
 }
 
+type NotifReqIFTTT struct {
+	Value1 string `json:"value1"`
+	Value2 string `json:"value2"`
+}
+
+func sendNotificationByIFTTT(message string, title string) {
+	url := "https://maker.ifttt.com/trigger/time_found/with/key/cPm6wv9SZ7Ipy-XkpdJo7b"
+
+	var jsonBytes []byte
+	jsonBytes, err := json.Marshal(&NotifReqIFTTT{
+		Value1: title,
+		Value2: message,
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(jsonBytes))
+	//req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	//client := &http.Client{}
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+	fmt.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
+}
+
 func sendNotificationByPushOver(message string, title string) {
 	url := "https://api.pushover.net/1/messages.json"
 
 	var jsonBytes []byte
-	jsonBytes, err := json.Marshal(&NotifReq{
+	jsonBytes, err := json.Marshal(&NotifReqPushOver{
 		Token:   "atvfudwzqaiapnynb436d3bsji625s",
 		User:    "uj19y8eotoue2gemw4aerdpkir9imq",
 		Message: message,
