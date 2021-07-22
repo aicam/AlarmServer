@@ -8,7 +8,7 @@ import (
 
 func (s *Server) checkToken() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		key := []byte("Ali@kian")
+		key := []byte("Ali@Kian")
 		token, err := hex.DecodeString(context.GetHeader("Authorization"))
 		username := []byte(context.GetHeader("username"))
 		if len(token) == 0 || len(username) == 0 {
