@@ -4,12 +4,11 @@ import (
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 )
 
 func (s *Server) checkToken() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		key := []byte(os.Getenv("SERVER_KEY"))
+		key := []byte("Ali@kian")
 		token, err := hex.DecodeString(context.GetHeader("Authorization"))
 		username := []byte(context.GetHeader("username"))
 		if len(token) == 0 || len(username) == 0 {

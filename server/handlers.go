@@ -5,7 +5,6 @@ import (
 	"github.com/aicam/AlarmServer/DB"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 )
@@ -33,7 +32,7 @@ func (s *Server) GetToken() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var user DB.UsersData
 		username := context.GetHeader("username")
-		key := []byte(os.Getenv("SERVER_KEY"))
+		key := []byte("Ali@Kian")
 		if err := s.DB.Where(DB.UsersData{Username: username}).First(&user).Error; err != nil {
 			context.JSON(http.StatusUnauthorized, Response{
 				StatusCode: -1,
