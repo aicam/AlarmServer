@@ -78,7 +78,7 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 		if jsData.DubaiTime.Month() >= 8 {
 			go sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
 			go sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
-			go SendNotificationByTelegram(jsData.ArmeniaTxt, "Dubai Time found")
+			go SendNotificationByTelegram(jsData.DubaiTxt, "Dubai Time found")
 		}
 		//if jsData.Priority >= 0 {
 		//	timeFounded, err := time.Parse(layout, jsData.ClosestDate)
