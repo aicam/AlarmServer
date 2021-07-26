@@ -5,7 +5,6 @@ import (
 	"crypto/des"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -65,22 +64,22 @@ func sendNotificationByIFTTT(message string, title string) {
 		return
 	}
 	//client := &http.Client{}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
+	_, err = http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		log.Println(err)
 	}
 	//defer resp.Body.Close()
 
-	log.Println("response Status:", resp.Status)
-	log.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
-	log.Println("response Body:", string(body))
+	//log.Println("response Status:", resp.Status)
+	//log.Println("response Headers:", resp.Header)
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//log.Println("response Body:", string(body))
 }
 
 func SendNotificationByTelegram(message string, title string) {
 	url := "https://api.telegram.org/bot1908920066:AAH83I6JFKGsWfE1f20f0y_S-6NDHKEjWW4/sendMessage"
 	jsonBytes, err := json.Marshal(&NotifReqTelegram{
-		ChatId:              "1001435126738",
+		ChatId:              "-1001435126738",
 		Text:                title + "\n" + message,
 		DisableNotification: false,
 	})
@@ -116,16 +115,16 @@ func sendNotificationByPushOver(message string, title string) {
 	}
 	log.Println(string(jsonBytes))
 	//client := &http.Client{}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
-	if err != nil {
-		log.Println(err)
-	}
-	//defer resp.Body.Close()
-
-	log.Println("response Status:", resp.Status)
-	log.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
-	log.Println("response Body:", string(body))
+	_, err = http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
+	//if err != nil {
+	//	log.Println(err)
+	//}
+	////defer resp.Body.Close()
+	//
+	//log.Println("response Status:", resp.Status)
+	//log.Println("response Headers:", resp.Header)
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//log.Println("response Body:", string(body))
 }
 
 func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
