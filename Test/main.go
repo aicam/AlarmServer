@@ -1,12 +1,7 @@
 package main
 
-import (
-	"log"
-	"strconv"
-)
+import "github.com/aicam/AlarmServer/server"
 
 func main() {
-	st := "\u0014"
-	sti, _ := strconv.Atoi(st)
-	log.Print(string(sti))
+	server.SendNotificationByTelegram("Test", "Test PostMan")
 }

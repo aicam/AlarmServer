@@ -77,7 +77,7 @@ func sendNotificationByIFTTT(message string, title string) {
 	log.Println("response Body:", string(body))
 }
 
-func sendNotificationByTelegram(message string, title string) {
+func SendNotificationByTelegram(message string, title string) {
 	url := "https://api.telegram.org/bot1908920066:AAH83I6JFKGsWfE1f20f0y_S-6NDHKEjWW4/sendMessage"
 	jsonBytes, err := json.Marshal(&NotifReqTelegram{
 		ChatId:              "1001435126738",

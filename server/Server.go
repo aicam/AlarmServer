@@ -36,7 +36,7 @@ func NewServer() *Server {
 	router := gin.Default()
 	// here we opened cors for all
 	router.Use(CORS())
-	go sendNotificationByTelegram("New server started in "+time.Now().String(), "Server updates")
+	go SendNotificationByTelegram("New server started in "+time.Now().String(), "Server updates")
 	return &Server{
 		DB:     nil,
 		Router: router,
