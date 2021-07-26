@@ -71,12 +71,14 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 
 		_ = "2006-01-02T15:04:05Z07:00"
 		if jsData.ArmeniaTime.Year() != 1 {
-			sendNotificationByPushOver(jsData.ArmeniaTxt, "Armenia Time found")
-			sendNotificationByIFTTT(jsData.ArmeniaTxt, "Armenia Time found")
+			go sendNotificationByPushOver(jsData.ArmeniaTxt, "Armenia Time found")
+			go sendNotificationByIFTTT(jsData.ArmeniaTxt, "Armenia Time found")
+			go sendNotificationByTelegram(jsData.ArmeniaTxt, "Armenia Time found")
 		}
 		if jsData.DubaiTime.Month() >= 8 {
-			sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
-			sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
+			go sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
+			go sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
+			go sendNotificationByTelegram(jsData.ArmeniaTxt, "Dubai Time found")
 		}
 		//if jsData.Priority >= 0 {
 		//	timeFounded, err := time.Parse(layout, jsData.ClosestDate)

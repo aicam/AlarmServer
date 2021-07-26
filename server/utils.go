@@ -5,8 +5,8 @@ import (
 	"crypto/des"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -40,6 +40,12 @@ type NotifReqIFTTT struct {
 	Value2 string `json:"value2"`
 }
 
+type NotifReqTelegram struct {
+	ChatId              string `json:"chat_id"`
+	Text                string `json:"text"`
+	DisableNotification bool   `json:"disable_notification"`
+}
+
 func sendNotificationByIFTTT(message string, title string) {
 	url := "https://maker.ifttt.com/trigger/time_found/with/key/cPm6wv9SZ7Ipy-XkpdJo7b"
 
@@ -49,26 +55,49 @@ func sendNotificationByIFTTT(message string, title string) {
 		Value2: message,
 	})
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
-	fmt.Println(string(jsonBytes))
+	log.Println(string(jsonBytes))
 	//req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	//client := &http.Client{}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
-	defer resp.Body.Close()
+	//defer resp.Body.Close()
 
-	fmt.Println("response Status:", resp.Status)
-	fmt.Println("response Headers:", resp.Header)
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
 	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
+	log.Println("response Body:", string(body))
+}
+
+func sendNotificationByTelegram(message string, title string) {
+	url := "https://api.telegram.org/bot1908920066:AAH83I6JFKGsWfE1f20f0y_S-6NDHKEjWW4/sendMessage"
+	jsonBytes, err := json.Marshal(&NotifReqTelegram{
+		ChatId:              "1001435126738",
+		Text:                title + "\n" + message,
+		DisableNotification: false,
+	})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	_, err = http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		log.Println(err)
+	}
+	//defer resp.Body.Close()
+	//
+	//log.Println("response Status:", resp.Status)
+	//log.Println("response Headers:", resp.Header)
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//log.Println("response Body:", string(body))
 }
 
 func sendNotificationByPushOver(message string, title string) {
@@ -82,26 +111,21 @@ func sendNotificationByPushOver(message string, title string) {
 		Title:   title,
 	})
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
-	fmt.Println(string(jsonBytes))
-	//req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	log.Println(string(jsonBytes))
 	//client := &http.Client{}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
-	defer resp.Body.Close()
+	//defer resp.Body.Close()
 
-	fmt.Println("response Status:", resp.Status)
-	fmt.Println("response Headers:", resp.Header)
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
 	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
+	log.Println("response Body:", string(body))
 }
 
 func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
