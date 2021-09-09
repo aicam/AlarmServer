@@ -68,7 +68,7 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			})
 			return
 		}
-
+		username := context.GetHeader("username")
 		_ = "2006-01-02T15:04:05Z07:00"
 		if jsData.ArmeniaTime.Year() != 1 {
 			go sendNotificationByPushOver(jsData.ArmeniaTxt, "Armenia Time found")
@@ -79,6 +79,17 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			go sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
 			go sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
 			go SendNotificationByTelegram(jsData.DubaiTxt, "Dubai Time found")
+		}
+		if jsData.TurkeyTime.Year() != 1 {
+			go sendNotificationByPushOver(jsData.DubaiTxt, "Dubai Time found")
+			go sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
+			go SendNotificationByTelegram(jsData.DubaiTxt, "Dubai Time found")
+		}
+		if jsData.TurkeyTime.Year() == 1 {
+			jsData.TurkeyTime = time.Now()
+		}
+		if jsData.ArmeniaTime.Year() == 1 {
+			jsData.ArmeniaTime = time.Now()
 		}
 		//if jsData.Priority >= 0 {
 		//	timeFounded, err := time.Parse(layout, jsData.ClosestDate)
@@ -96,6 +107,7 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 		//	}
 		//}
 
+		jsData.Username = username
 		s.DB.Save(&jsData)
 		context.JSON(http.StatusOK, Response{
 			StatusCode: 1,

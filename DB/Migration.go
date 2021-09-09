@@ -11,6 +11,7 @@ type WebData struct {
 	gorm.Model
 	Status      string    `json:"status"`
 	Error       string    `json:"error"`
+	Username    string    `json:"username"`
 	DubaiTxt    string    `json:"dubai_txt"`
 	DubaiTime   time.Time `json:"dubai_time"`
 	ArmeniaTxt  string    `json:"armenia_txt"`

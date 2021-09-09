@@ -5,6 +5,7 @@ import (
 	"crypto/des"
 	"encoding/json"
 	"errors"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -77,6 +78,7 @@ func sendNotificationByIFTTT(message string, title string) {
 }
 
 func SendNotificationByTelegram(message string, title string) {
+	log.Println("Send by Telegram started")
 	url := "https://api.telegram.org/bot1908920066:AAH83I6JFKGsWfE1f20f0y_S-6NDHKEjWW4/sendMessage"
 	jsonBytes, err := json.Marshal(&NotifReqTelegram{
 		ChatId:              "-1001435126738",
@@ -87,16 +89,17 @@ func SendNotificationByTelegram(message string, title string) {
 		log.Println(err)
 		return
 	}
-	_, err = http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		log.Println(err)
 	}
 	//defer resp.Body.Close()
 	//
-	//log.Println("response Status:", resp.Status)
-	//log.Println("response Headers:", resp.Header)
-	//body, _ := ioutil.ReadAll(resp.Body)
-	//log.Println("response Body:", string(body))
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	log.Println("Send by Telegram ended")
 }
 
 func sendNotificationByPushOver(message string, title string) {
