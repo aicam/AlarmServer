@@ -85,6 +85,9 @@ func (s *Server) AddInfo() gin.HandlerFunc {
 			go sendNotificationByIFTTT(jsData.DubaiTxt, "Dubai Time found")
 			go SendNotificationByTelegram(jsData.DubaiTxt, "Dubai Time found")
 		}
+		if jsData.DubaiTime.Year() == 1 {
+			jsData.DubaiTime = time.Now()
+		}
 		if jsData.TurkeyTime.Year() == 1 {
 			jsData.TurkeyTime = time.Now()
 		}

@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 type Server struct {
@@ -20,7 +19,7 @@ func CORS() gin.HandlerFunc {
 		c.Writer.Header().Set("Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max, username")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 		if c.Request.Method == "OPTIONS" {
@@ -36,7 +35,7 @@ func NewServer() *Server {
 	router := gin.Default()
 	// here we opened cors for all
 	router.Use(CORS())
-	go SendNotificationByTelegram("New server started in "+time.Now().String(), "Server updates")
+	//go SendNotificationByTelegram("New server started in "+time.Now().String(), "Server updates")
 	return &Server{
 		DB:     nil,
 		Router: router,
